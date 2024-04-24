@@ -12,25 +12,30 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
-  function Button({banana, big}) {
-    console.log(banana, big);
+  function Button({text: text, onClick}) {
+    console.log(text + " rendered");
     return (
-      <button style={{
-        backgroundColor: 'tomato',
-        color: 'white',
-        padding: '10px 20px',
-        border: 0,
-        borderRadius: 10,
-        fontSize: big ? 20 : 16
-      }}>{banana}</button>
+      <button
+        onClick={onClick}
+        style={{
+          backgroundColor: 'tomato',
+          color: 'white',
+          padding: '10px 20px',
+          border: 0,
+          borderRadius: 10,
+        }}>{text}</button>
     );
   }
 
+  const MemoizedButton = React.memo(Button);
+
   function App() {
+    const [value, setValue] = React.useState("Save Changes");
+    const changeValue = () => setValue("Revert Changes");
     return (
       <div>
-        <Button banana="Save Changes" big={true} />
-        <Button banana="Continue" big={false}/>
+        <MemoizedButton text={value} onClick={changeValue} />
+        <MemoizedButton text="Coninue" />
       </div>
     );
   }
